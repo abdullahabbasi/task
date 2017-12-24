@@ -1,0 +1,78 @@
+@import 'base';
+@import '~bootstrap/scss/bootstrap.scss';
+
+// Some best-practice CSS that's useful for most apps
+// Just remove them if they're not what you want
+html {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #F5F7F9;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.header-layout {
+  height: 50px;
+  width: 100%;
+  background-color: #1C2F45;
+}
+.main-layout {
+  padding-top: 5%;
+  width: 80%;
+  margin: auto;
+}
+
+.btn {
+  color: white;
+  margin: 2px;
+  cursor: pointer;
+}
+
+.btn-add {
+  background-color: #909FB2;
+}
+
+.btn-save {
+  background-color: #61C796;
+}
+
+.header-text {
+  color: #394A63;
+}
+
+.item-container {
+  margin-top : 5%;
+}
+
+.task {
+  background-color: #FFF;
+  height: 10em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 1em;
+}
+
+.task-name {
+  color: #AAB7CD;
+  padding-left: 5px;
+  padding-top: 5px;
+}
+
+.task-container {
+  width: 80%;
+  display: inline-block;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
