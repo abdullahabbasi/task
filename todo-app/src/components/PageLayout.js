@@ -12,17 +12,18 @@ export default class PageLayout extends Component {
     todos: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
   }
-  state = { todoList : this.props.todos }
+  state = { todoList : []};
   alertOptions = {
     offset: 14,
     position: 'bottom left',
     transition: 'scale'
   }
 
-  componentWillMount () {
+  componentDidMount () {
     axios.get(`http://cfassignment.herokuapp.com/test/tasks`)
     .then(response => {
       this.props.actions.getTodoList(response.data.tasks)
+      this.setState({ todoList: response.data.tasks })
     })
     .catch((error) => {
       console.log('error', error)
@@ -46,6 +47,7 @@ export default class PageLayout extends Component {
     axios.post(`http://cfassignment.herokuapp.com/test/tasks`, payload)
     .then(response => {
       this.showAlert(true)
+      this.setState({ todoList :this.props.todos })
     })
     .catch((error) => {
       this.showAlert(false)
@@ -59,7 +61,7 @@ export default class PageLayout extends Component {
     if (_.isNil(todoList) || todoList.length === 0) {
       return (<div> No Task Present</div>)
     } else {
-        return _.map(todoList, (todo, index) => (<TodoItem key={index} item={todo} actions={actions} text={todo.task_title} createdAt={todo.created_at}/>));
+      return _.map(todoList, (todo, index) => (<TodoItem key={index} item={todo} actions={actions} text={todo.task_title} createdAt={todo.created_at}/>));
     }
   }
   render() {
@@ -74,7 +76,7 @@ export default class PageLayout extends Component {
               </Col>
               <Col sm={4}>
                 <Button className='btn-add' onClick={this.addTask.bind(this)}>Add Task</Button>
-                <Button className='btn-save' onClick={this.handleSave.bind(this)}>Save</Button>
+                <Button className='btn-save' onClick={this.handleSave.bind(this)} disabled={_.isEqual(this.state.todoList, this.props.todos)}>Save</Button>
               </Col>
             </Row>
           </Grid>

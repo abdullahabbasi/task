@@ -17,6 +17,12 @@ export default class TodoTextInput extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps) {
+      this.setState({text:nextProps.text})
+    }
+  }
+
   handleDoubleClick = () => {
     this.setState({ editing: true })
   }
