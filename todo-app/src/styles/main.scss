@@ -8,6 +8,28 @@ html {
   box-sizing: border-box;
 }
 
+.alert-success {
+  color: #74ccb4;
+  background-color: #F6FFFB;
+  border-color: #74ccb4 !important;
+}
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #721c24 !important;
+}
+.custom-alert {
+  position: fixed;
+  z-index: 999;
+  width: 430px;
+  height: 50px;
+  right: 25px;
+  bottom: 25px;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
 html,
 body {
   font-family: 'Lato', sans-serif;

@@ -5,19 +5,14 @@ import axios from 'axios'
 import '../styles/main.scss'
 import { Button, Grid, Row, Col } from 'react-bootstrap'
 import _ from 'lodash'
-import AlertContainer from 'react-alert'
+import { Alert } from 'react-bootstrap';
 
 export default class PageLayout extends Component {
   static propTypes = {
     todos: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired
   }
-  state = { todoList : []};
-  alertOptions = {
-    offset: 14,
-    position: 'bottom left',
-    transition: 'scale'
-  }
+  state = { todoList : [], alertVisible: false, alertType: ''};
 
   componentDidMount () {
     axios.get(`http://cfassignment.herokuapp.com/test/tasks`)
@@ -30,14 +25,6 @@ export default class PageLayout extends Component {
     })
   }
 
-  showAlert (flag) {
-    if (flag) {
-      this.msg.show('Tasks Saved Successfully')
-    } else {
-      this.msg.error('Some error message or component')
-    }
-  }
-
   addTask () {
     this.props.actions.addTodo()
   }
@@ -46,11 +33,11 @@ export default class PageLayout extends Component {
     let payload = { tasks : this.props.todos }
     axios.post(`http://cfassignment.herokuapp.com/test/tasks`, payload)
     .then(response => {
-      this.showAlert(true)
-      this.setState({ todoList :this.props.todos })
+      this.setState({ todoList :this.props.todos})
+      this.handleAlertShow('success')
     })
     .catch((error) => {
-      this.showAlert(false)
+      this.handleAlertShow('failed')
       console.log('error', error)
     })
   }
@@ -64,6 +51,32 @@ export default class PageLayout extends Component {
       return _.map(todoList, (todo, index) => (<TodoItem key={index} item={todo} actions={actions} text={todo.task_title} createdAt={todo.created_at}/>));
     }
   }
+
+  renderAlert() {
+    if (this.state.alertVisible) {
+      if(this.state.alertType === 'success') {
+        return (
+            <Alert bsClass="custom-alert alert-success"  onDismiss={this.handleAlertDismiss.bind(this)}>
+              <p>Tasks Saved Successfully</p>
+            </Alert>
+        )
+      } else if(this.state.alertType === 'failed')
+      return (
+          <Alert bsClass="custom-alert alert-danger" onDismiss={this.handleAlertDismiss.bind(this)}>
+            <p>Error Occured</p>
+          </Alert>
+      )
+    }
+  }
+
+  handleAlertDismiss () {
+    this.setState({ alertVisible: false })
+  }
+
+  handleAlertShow (type) {
+    this.setState({ alertVisible: true, alertType: type })
+  }
+
   render() {
     return (
       <div>
@@ -83,7 +96,7 @@ export default class PageLayout extends Component {
           <div className='item-container'>
             {this.renderItems()}
           </div>
-          <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+          {this.renderAlert()}
         </div>
       </div>
     )
